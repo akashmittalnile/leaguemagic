@@ -1,0 +1,13 @@
+.page-body-wrapper{display: flex;}
+#content-wrapper{background-color: #f8f9fc; width: 100%; overflow-x: hidden;}
+#content-body{flex: 1 0 auto;}
+.body-content-heading h3{font-size: 20px; font-weight: 600; color: #000;}
+.card.cards-customize{border-radius: 14px;}
+.cards-customize .card-body{border-radius: 14px;}
+.card-content p{ color:#000; font-size: 14px; margin-bottom: 10px;}
+.card-content h5{font-weight: 500; font-size: 16px; color: #000;}
+.card-content p span{ color: #479100; font-size: 14px; }
+.user-profile-bg{background: #f1f2fa; padding: 10px 20px; border-radius: 60px; font-size: 13px; color: #000; border: 1px solid #dee0ed;  }
+.user-profile-bg a{color: #fff;}
+.user-profile-bg:hover{color: #000; cursor: pointer;}
+.dropdown-menu a {font-size: 14px; }

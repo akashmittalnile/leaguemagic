@@ -1,0 +1,7 @@
+html body.bg-full-screen-image {
+   background: url(../images/NicePng.png) no-repeat center center fixed; background-size: cover; 
+}
+
+.justify-content-center {
+   margin-top: 12% !important;
+}

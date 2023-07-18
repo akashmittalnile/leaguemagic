@@ -1,0 +1,2 @@
+[04-Jul-2023 11:25:33 UTC] PHP Fatal error:  Cannot redeclare App\Http\Controllers\Admin\AdminDashboardController::index() in /home/dlayy048i7m0/public_html/league_magic/app/Http/Controllers/Admin/AdminDashboardController.php on line 32
+[04-Jul-2023 11:25:50 UTC] PHP Fatal error:  Cannot redeclare App\Http\Controllers\Admin\AdminDashboardController::index() in /home/dlayy048i7m0/public_html/league_magic/app/Http/Controllers/Admin/AdminDashboardController.php on line 32

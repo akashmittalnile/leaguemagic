@@ -72,9 +72,9 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin'], fu
 
 
     // users
-    Route::resource('users', 'UserController');
     Route::get('userAccount', 'UserController@account')->name("users.account");
-    Route::resource('useraccess', 'UserAccessController');
+    Route::resource('users', 'UserController');
+    Route::resource('userAccess', 'UserAccessController');
 });
 
 Route::group(['as' => 'user.', 'prefix' => 'user', 'namespace' => 'User', 'middleware' => ['auth', 'user']], function () {

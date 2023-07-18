@@ -196,7 +196,7 @@
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             </div> -->
                                     <div class="w-100">
                                         <select name="participating_clubs[]" id="participating_clubs" class="form-control" multiple multiselect-search="true">
-                                            <option value="--" selected>0 selected</option>
+
                                             @foreach ($clubs as $item)
                                             <option value="{{ $item->id }}">{{ $item->title }}</option>
                                             @endforeach

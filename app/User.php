@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Models\Positions;
 use App\Models\Role;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -38,15 +39,23 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function roles(){
-       return $this->belongsTo('App\Models\Role');
+    public function roles()
+    {
+        return $this->belongsTo('App\Models\Role');
     }
 
     public function role()
     {
         return $this->belongsTo(Role::class);
     }
-
+    public function position()
+    {
+        return $this->belongsTo(Positions::class);
+    }
+    public function State()
+    {
+        return $this->belongsTo(State::class);
+    }
     public function posts()
     {
         return $this->hasMany(Post::class);

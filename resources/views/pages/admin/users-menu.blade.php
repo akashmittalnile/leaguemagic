@@ -22,7 +22,7 @@
 
 
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link {{ Request::is('admin/userAccess*') ? 'active' : '' }}" href="{{ route('admin.userAccess.index') }}">
                             <span class="menu-icon"><img src="{{asset('public/admin/images/UsersAccess.svg')}}"></span>
                             <span class="menu-title">Users Access</span>
                         </a>

@@ -73,11 +73,11 @@
                                     <td style="width: 100px;">
                                         <div class="table-action-info">
                                             <!-- <a data-bs-toggle="modal" data-bs-target="#view" class="view-btn">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <img src="{{ asset('public/admin/images/view-icon.svg') }}">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </a> -->
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <img src="{{ asset('public/admin/images/view-icon.svg') }}">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </a> -->
                                             <button onclick="edit(this)"
-                                                data-first_name="{{ $con->name ? $con->name : $con->first_name }}"\
-                                                data-last_name="{{ $con->name ? '' : $con->last_name }}"
+                                                data-first_name="{{ $con->first_name ? $con->first_name : $con->name }}"
+                                                data-last_name="{{ $con->last_name ? $con->last_name : '' }}"
                                                 data-email="{{ $con->email }}"
                                                 data-contact_number="{{ $con->contact_number }}"
                                                 data-city="{{ $con->city }}" data-state_id="{{ $con->state_id }}"
@@ -266,8 +266,8 @@
                                                 </select>
                                             </div>
                                             <div class="col-sm-6 p-2">
-                                                <input type="number" class="form-control" name="zipcode" id="edit-city"
-                                                    placeholder="zipcode">
+                                                <input type="number" class="form-control" name="zipcode"
+                                                    id="edit-zipcode" placeholder="zipcode">
                                             </div>
 
                                         </div>
@@ -289,10 +289,20 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label>Change Password</label>
-                                        <input type="password" class="form-control" name="password" id="edit-password"
-                                            placeholder="Password">
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input type="checkbox" class="form-check-input"
+                                                    onchange="CheckPassword(this)" value="checkedValue">
+                                                Reset Password
+                                            </label>
+                                        </div>
+                                        <div class="form-group" id="passchange" style="display: none;">
+                                            <label>Change Password</label>
+                                            <input type="password" class="form-control" name="password"
+                                                id="edit-password" placeholder="Password">
+                                        </div>
                                     </div>
+
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-group">
@@ -373,6 +383,17 @@
                     )
                 }
             })
+        }
+
+        function CheckPassword(ele) {
+
+            if (ele.checked) {
+                $("#passchange").show();
+
+            } else {
+                $("#passchange").hide();
+
+            }
         }
 
         function edit(ele) {

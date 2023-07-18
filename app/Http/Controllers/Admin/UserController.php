@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\Exports\userExport;
 use App\Http\Controllers\Controller;
 use App\Models\Club;
 use App\Models\Positions;
@@ -34,6 +35,9 @@ class UserController extends Controller
             $users = User::where('name', "LIKE", "%$keyword%")->paginate($paginate);
             return view('pages.admin.users.index', compact('users', 'states', 'positions', 'clubs'));
         }
+        if (request()->has('export')) {
+            return (new userExport)->download('users.xlsx');
+        }
         $users = User::paginate($paginate);
         return view('pages.admin.users.index', compact('users', 'states', 'positions', 'clubs'));
     }
@@ -65,7 +69,49 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+
+
+
+            $arr = [
+                'email' => 'required|unique:users|max:255',
+                'contact_number' => 'required|unique:users|max:15',
+
+            ];
+
+
+            if ($request->password != "") {
+                $arr['password'] = 'min:6';
+            }
+            $validator = Validator::make($request->all(), $arr);
+
+            if ($validator->fails()) {
+                return response()->json(['errors' => $validator->errors()], 422);
+            }
+
+            $tag =  new User();
+            $tag->first_name = $request->first_name;
+            $tag->last_name = $request->last_name;
+            $tag->city = $request->city;
+            $tag->state_id = $request->state_id;
+            $tag->position_id = $request->position_id;
+            $tag->role_id = 3;
+
+            $tag->address_line1 = $request->address_line1;
+            $tag->address_line2 = $request->address_line2;
+            $tag->email = $request->email;
+            $tag->contact_number = $request->contact_number;
+            $tag->status = 1;
+
+            if ($request->password != "" && strlen($request->password) >= 6) {
+                $tag->password = $request->password;
+            }
+            $tag->save();
+
+            return response()->json(['message' => 'User created successfully.', 'status' => 201], 201);
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage(), 'status' => 200], 200);
+        }
     }
 
     /**

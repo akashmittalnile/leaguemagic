@@ -160,7 +160,7 @@
                                     <label>Club Divisions</label>
                                     <div class="w-100">
                                         <select name="club_divisions[]" id="club_divisions" class="form-control" multiple multiselect-search="true">
-                                            <option value="--" selected>0 selected</option>
+
                                             @foreach ($divisions as $division)
                                             <option value="{{ $division->id }}">{{ $division->name }} </option>
 

@@ -305,7 +305,7 @@
                                     <div class="form-group">
                                         <label>Division Age Group</label>
                                         <select name="age_group${i}[]" class="form-control" multiple multiselect-search="true" required>
-                                            <option value="">--select--</option>
+                                          
                                             @foreach ([4,5,6,7,8,9,10,11,12,13] as $item)
                                             <option value="{{ $item }}">{{ $item }}</option>
                                             @endforeach
@@ -319,7 +319,7 @@
                                     <div class="form-group">
                                         <label>Playdown Age Group</label>
                                         <select name="playdown_age_group${i}[]" class="form-control" multiple multiselect-search="true" required>
-                                            <option value="">--select--</option>
+                                           
                                             @foreach ([4,5,6,7,8,9,10,11,12,13] as $item)
                                             <option value="{{ $item }}">{{ $item }}</option>
                                             @endforeach

@@ -26,7 +26,10 @@ class userExport implements FromCollection, WithHeadings
             unset($columns[$key]);
         }
 
-        if (($key = array_search('sort_order', $columns)) !== false) {
+        if (($key = array_search('password', $columns)) !== false) {
+            unset($columns[$key]);
+        }
+        if (($key = array_search('remember_token', $columns)) !== false) {
             unset($columns[$key]);
         }
 
@@ -34,10 +37,13 @@ class userExport implements FromCollection, WithHeadings
     }
     public function collection()
     {
-        $certifcates = Positions::all();
-        foreach ($certifcates as $i => $cert) {
-            $cert->created_by = $cert->user ? $cert->user->name : "Admin";
+        $users = User::all();
+        $users->makeHidden(['password', "updated_at", "remember_token"]);
+        foreach ($users as $i => $cert) {
+            $cert->role_id = $cert->role ? $cert->role->name : "User";
+            $cert->position_id = $cert->position ? $cert->position->name : "User";
+            $cert->state_id = $cert->state ? $cert->state->name : "US";
         }
-        return $certifcates;
+        return $users;
     }
 }

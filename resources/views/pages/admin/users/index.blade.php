@@ -13,7 +13,7 @@
                 <h4 class="heading-title">Users Account</h4>
             </div>
             <div class="p-2">
-                <a class="btn search-icon add-new-btn mx-1 shadow" href="{{ route('admin.users.account', 'export=true') }}">Export users</a>
+                <a class="btn search-icon add-new-btn mx-1 shadow" href="{{ route('admin.users.index', 'export=true') }}">Export users</a>
             </div>
             <div class="btn-option-info wd50">
                 <div class="search-filter">
@@ -68,7 +68,11 @@
 
 
                             <td>
+                                @if ($con->first_name!="")
+                                {{ $con->first_name." ".$con->last_name }}
+                                @else
                                 {{ $con->name }}
+                                @endif
                             </td>
 
                             <td>
@@ -135,24 +139,28 @@
 
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="col-sm-12 p-2">
-                                    <select name="state_id" class="form-control" id="edit-state_id">
-                                        <option value="">Select a position</option>
-                                        @foreach ($positions as $item)
-                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                        @endforeach
+                                <div class="col-sm-12 ">
+                                    <div class="form-group">
+                                        <label>Position</label>
+                                        <select name="state_id" class="form-control">
 
-                                    </select>
+                                            <option value="">Select a position</option>
+                                            @foreach ($positions as $item)
+                                            <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                            @endforeach
+
+                                        </select>
+                                    </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label>Clubs</label>
+                                        <label>Which Clubs access is required</label>
                                         <!-- <input type="text" class="form-control" placeholder="Search Club By Name">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         </div> -->
                                         <div class="w-100">
                                             <select name="clubs[]" id="participating_clubs" class="form-control" multiple multiselect-search="true">
-                                                <option value="--" selected>0 selected</option>
+
                                                 @foreach ($clubs as $item)
-                                                <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                                <option value="{{ $item->id }}">{{ $item->title }}</option>
                                                 @endforeach
 
                                             </select>
@@ -163,13 +171,13 @@
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label> First Name</label>
-                                            <input type="text" class="form-control" name="first_name" id="edit-first_name" placeholder="First Name">
+                                            <input type="text" class="form-control" name="first_name" placeholder="First Name">
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label>Last Name</label>
-                                            <input type="text" class="form-control" name="last_name" id="edit-last_name" placeholder="Last Name">
+                                            <input type="text" class="form-control" name="last_name" placeholder="Last Name">
                                         </div>
                                     </div>
                                 </div>
@@ -181,19 +189,19 @@
                                     <label>Address</label>
                                     <div class="row">
                                         <div class="col-sm-12 p-2">
-                                            <input type="text" class="form-control" name="address_line1" id="edit-address_line1" placeholder="Address Line 1">
+                                            <input type="text" class="form-control" name="address_line1" placeholder="Address Line 1">
                                         </div>
                                         <div class="col-sm-12 p-2">
-                                            <input type="text" class="form-control" name="address_line2" id="edit-address_line2" placeholder="Address Line 2">
+                                            <input type="text" class="form-control" name="address_line2" placeholder="Address Line 2">
                                         </div>
 
                                         <div class="col-sm-6 p-2">
-                                            <input type="text" class="form-control" name="city" id="edit-city" placeholder="city">
+                                            <input type="text" class="form-control" name="city" placeholder="city">
                                         </div>
 
 
                                         <div class="col-sm-6 p-2">
-                                            <select name="state_id" class="form-control" id="edit-state_id">
+                                            <select name="state_id" class="form-control">
                                                 <option value="">Select a state</option>
                                                 @foreach ($states as $item)
                                                 <option value="{{ $item->id }}">{{ $item->name }}</option>
@@ -202,7 +210,7 @@
                                             </select>
                                         </div>
                                         <div class="col-sm-6 p-2">
-                                            <input type="number" class="form-control" name="zipcode" id="edit-city" placeholder="zipcode">
+                                            <input type="number" class="form-control" name="zipcode" placeholder="zipcode">
                                         </div>
 
                                     </div>
@@ -211,37 +219,28 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label>Email</label>
-                                    <input type="text" class="form-control" name="email" id="edit-email" placeholder="Email">
+                                    <input type="text" class="form-control" name="email" placeholder="Email">
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label>Phone</label>
-                                    <input type="text" class="form-control" name="contact_number" id="edit-contact_number" placeholder="Phone">
+                                    <input type="text" class="form-control" name="contact_number" placeholder="Phone">
                                 </div>
                             </div>
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                            <input type="checkbox" class="form-check-input" onchange="CheckPassword(this)" value="checkedValue" checked>
-                                            Reset Password
-                                        </label>
-                                    </div>
-                                    <div class="form-group" id="passchange" style="display: none;">
-                                        <label>Change Password</label>
-                                        <input type="password" class="form-control" name="password" id="edit-password" placeholder="Password">
-                                    </div>
+                            <!-- <div class="col-md-12">
+                                <div class="form-group" id="passchange" style="display: none;">
+                                    <label>Change Password</label>
+                                    <input type="password" class="form-control" name="password" id="edit-password" placeholder="Password">
                                 </div>
-
-                            </div>
+                            </div> -->
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label>Status</label>
                                     <ul class="lm-Status-list">
                                         <li>
                                             <div class="lm-radio">
-                                                <input type="radio" value="1" id="edit-Active" name="status">
+                                                <input type="radio" value="1" id="Active" name="status">
                                                 <label for="Active">
                                                     Active
                                                 </label>
@@ -249,7 +248,7 @@
                                         </li>
                                         <li>
                                             <div class="lm-radio">
-                                                <input type="radio" value="0" id="edit-Inactive" name="status">
+                                                <input type="radio" value="0" id="Inactive" name="status">
                                                 <label for="Inactive">
                                                     Inactive
                                                 </label>
@@ -334,7 +333,7 @@
                                             </select>
                                         </div>
                                         <div class="col-sm-6 p-2">
-                                            <input type="number" class="form-control" name="zipcode" id="edit-city" placeholder="zipcode">
+                                            <input type="number" class="form-control" name="zipcode" id="edit-zipcode" placeholder="zipcode">
                                         </div>
 
                                     </div>
@@ -483,7 +482,6 @@
     }
 
     function CheckPassword(ele) {
-
         if (ele.checked) {
             $("#passchange").show();
 

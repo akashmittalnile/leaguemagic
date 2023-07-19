@@ -71,10 +71,16 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin'], fu
     Route::get('clubRegistrations', 'ClubsController@registrations')->name("clubs.registrations");
 
 
+
     // users
     Route::get('userAccount', 'UserController@account')->name("users.account");
     Route::resource('users', 'UserController');
     Route::resource('userAccess', 'UserAccessController');
+    Route::get('userPending', 'UserController@pending')->name("users.pending");
+    Route::get('userReject', 'UserController@reject')->name("users.reject");
+    Route::resource('userNotification', 'UserNotificationController');
+    Route::resource('staffManagement', 'staffManagementController');
+    Route::resource('staffTimecard', 'staffTimecardController');
 });
 
 Route::group(['as' => 'user.', 'prefix' => 'user', 'namespace' => 'User', 'middleware' => ['auth', 'user']], function () {

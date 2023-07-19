@@ -29,7 +29,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link {{ Request::is('admin/userPending*') ? 'active' : '' }}" href="{{ route('admin.users.pending') }}">
                             <span class="menu-icon"><img src="{{asset('public/admin/images/UsersPending.svg')}}"></span>
                             <span class="menu-title">Users Pending</span>
                         </a>
@@ -37,21 +37,21 @@
 
 
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link {{ Request::is('admin/userNotification*') ? 'active' : '' }}" href="{{ route('admin.userNotification.create') }}">
                             <span class="menu-icon"><img src="{{asset('public/admin/images/UsersNotification.svg')}}"></span>
                             <span class="menu-title">Users Notification</span>
                         </a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link {{ Request::is('admin/staffManagement*') ? 'active' : '' }}" href="{{ route('admin.staffManagement.index') }}">
                             <span class="menu-icon"><img src="{{asset('public/admin/images/StaffManagement.svg')}}"></span>
                             <span class="menu-title">Staff Management</span>
                         </a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link {{ Request::is('admin/staffTimecard*') ? 'active' : '' }}" href="{{ route('admin.staffTimecard.index') }}">
                             <span class="menu-icon"><img src="{{asset('public/admin/images/UsersManagement.svg')}}"></span>
                             <span class="menu-title">Staff Timecards</span>
                         </a>

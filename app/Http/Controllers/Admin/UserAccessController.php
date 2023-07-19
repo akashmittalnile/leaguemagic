@@ -9,6 +9,7 @@ use App\Models\Group;
 use App\Models\Level;
 use App\Models\Sport;
 use App\Models\UserAccess as ModelsUserAccess;
+use App\Models\UserClubAccess;
 use App\User;
 
 use Illuminate\Http\Request;
@@ -111,6 +112,7 @@ class UserAccessController extends Controller
         $data["divisions"] = implode(",", $request->divisions);
         $data["clubs"] = implode(",", $request->clubs);
 
+
         foreach ($data as $key => $value) {
             $first = ModelsUserAccess::where("access_key", $key)->where("user_id", $id)->first();
             if ($first) {
@@ -123,6 +125,15 @@ class UserAccessController extends Controller
                 $userAccess->access_value = $value;
                 $userAccess->user_id = $id;
                 $userAccess->save();
+            }
+        }
+
+        if ($request->has("clubs")) {
+            foreach ($request->clubs as $club_id) {
+                $userClubAccess = new UserClubAccess();
+                $userClubAccess->user_id = $id;
+                $userClubAccess->club_id = $club_id;
+                $userClubAccess->save();
             }
         }
         return response()->json(['message' => 'Access Updated successfully.', 'status' => 201], 201);

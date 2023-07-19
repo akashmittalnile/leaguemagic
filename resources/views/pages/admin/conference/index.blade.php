@@ -21,8 +21,12 @@
                     <div class="row g-2">
                         <div class="col-md-7">
                             <div class="search-form-group">
-                        
+                                <form class="d-flex">
+                                    <input type="text" name="search" class="form-control" placeholder="Search divisions by name or status">
+                                    <button class="btn search-icon bg-light mx-1 shadow " type="submit"><img src="{{asset('public/admin/images/search-icon.svg')}}"></button>
+                                    <a class="btn search-icon bg-light mx-1 shadow" href="{{route('admin.conference.index')}}"><img src="{{asset('public/admin/images/reset.png')}}" height="25"></a>
 
+                                </form>
                             </div>
                         </div>
                         <div class="col-md-5">

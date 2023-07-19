@@ -7,6 +7,12 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav">
                     <li class="nav-item">
+                        <a class="nav-link {{ Request::is('admin/programs*') ? 'active' : '' }}" aria-current="page" href="{{ route('admin.programs.index') }}">
+                            <span class="menu-icon"><img src="{{asset('public/admin/images/programs.svg')}}"></span>
+                            <span class="menu-title">Programs</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link {{ Request::is('admin/programClubDivisions*') ? 'active' : '' }}" aria-current="page" href="{{ route('admin.programClubDivisions.index') }}">
                             <span class="menu-icon"><img src="{{asset('public/admin/images/conferences.svg')}}"></span>
                             <span class="menu-title">Teams</span>

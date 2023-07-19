@@ -4,20 +4,14 @@ namespace App\Http\Controllers\Admin;
 
 use App\Exports\Exports\userExport;
 use App\Http\Controllers\Controller;
-use App\Models\Club;
-use App\Models\Positions;
-use App\Models\UserClubAccess;
 use App\User;
-use Validator;
+use Brian2694\Toastr\Facades\Toastr;
 use Exception;
-use Brian2694\Toastr\Toastr;
-
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
+use Validator;
 
-class UserController extends Controller
+class StaffManagementController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -28,28 +22,18 @@ class UserController extends Controller
     {
         $paginate = env('PAGINATE');
         $states = DB::table("states")->get();
-        $positions = Positions::all();
-        $clubs = Club::all();
+
 
         if (request()->has('search')) {
             $keyword = request("search");
-            $users = User::where('first_name', "LIKE", "%$keyword%")->paginate($paginate);
-            return view('pages.admin.users.index', compact('users', 'states', 'positions', 'clubs'));
+            $staffManagement = User::where("user_type", "staff")->where('first_name', "LIKE", "%$keyword%")->paginate($paginate);
+            return view('pages.admin.staffManagement.index', compact('staffManagement', 'states'));
         }
         if (request()->has('export')) {
-            return (new userExport)->download('users.xlsx');
+            return (new userExport)->download('staff.xlsx');
         }
-        $users = User::paginate($paginate);
-        return view('pages.admin.users.index', compact('users', 'states', 'positions', 'clubs'));
-    }
-    public function account()
-    {
-
-        $users = User::where("id", Auth::guard('admin')->id())->paginate();
-        $switch = User::all();
-        $states = DB::table("states")->get();
-
-        return view('pages.admin.users.account', compact('users', 'switch', 'states'));
+        $staffManagement = User::where("user_type", "staff")->paginate($paginate);
+        return view('pages.admin.staffManagement.index', compact('staffManagement', 'states'));
     }
 
     /**
@@ -61,48 +45,7 @@ class UserController extends Controller
     {
         //
     }
-    public function pending()
-    {
-        $paginate = env('PAGINATE');
-        $states = DB::table("states")->get();
-        $positions = Positions::all();
-        $clubs = Club::all();
 
-        if (request()->has('search')) {
-            $keyword = request("search");
-            $users = User::where("isActive", "pending")->where('first_name', "LIKE", "%$keyword%")->paginate($paginate);
-            return view('pages.admin.users.pending', compact('users', 'states', 'positions', 'clubs'));
-        }
-
-        $users = User::where("isActive", "pending")->paginate($paginate);
-        return view('pages.admin.users.pending', compact('users', 'states', 'positions', 'clubs'));
-    }
-    public function reject()
-    {
-        $paginate = env('PAGINATE');
-        $states = DB::table("states")->get();
-        $positions = Positions::all();
-        $clubs = Club::all();
-        $users = User::where("isActive", "pending");
-
-        if (request()->has('search')) {
-            $keyword = request("search");
-            if (request("search") != "") {
-                $users =  $users->where('first_name', "LIKE", "%$keyword%")->where('last_name', "LIKE", "%$keyword%");
-            }
-            if (request("start_date") != "") {
-                $users =  $users->where('created_at', ">", request("start_date"));
-            }
-            if (request("end_date") != "") {
-                $users =  $users->where('created_at', "<", request("start_date"));
-            }
-            $users =   $users->paginate($paginate);
-            return view('pages.admin.users.pending', compact('users', 'states', 'positions', 'clubs'));
-        }
-
-        $users = User::where("isActive", "reject")->paginate($paginate);
-        return view('pages.admin.users.rejected', compact('users', 'states', 'positions', 'clubs'));
-    }
     /**
      * Store a newly created resource in storage.
      *
@@ -121,9 +64,7 @@ class UserController extends Controller
             ];
 
 
-            if ($request->password != "") {
-                $arr['password'] = 'min:6';
-            }
+
             $validator = Validator::make($request->all(), $arr);
 
             if ($validator->fails()) {
@@ -135,30 +76,24 @@ class UserController extends Controller
             $tag->last_name = $request->last_name;
             $tag->city = $request->city;
             $tag->state_id = $request->state_id;
-            $tag->position_id = $request->position_id;
             $tag->role_id = 3;
+            $tag->username = explode("@", $request->email)[0];
 
+            $tag->user_type = "staff";
             $tag->address_line1 = $request->address_line1;
             $tag->address_line2 = $request->address_line2;
             $tag->email = $request->email;
             $tag->contact_number = $request->contact_number;
+            $tag->hourly_rate = $request->hourly_rate;
+            $tag->mileage_rate = $request->mileage_rate;
+
             $tag->status = 1;
 
 
-            if ($request->password != "" && strlen($request->password) >= 6) {
-                $tag->password = $request->password;
-            }
-            $tag->save();
-            if ($request->has("clubs")) {
-                foreach ($request->clubs as $club_id) {
-                    $userAccess = new UserClubAccess();
-                    $userAccess->user_id = $tag->id;
-                    $userAccess->club_id = $club_id;
-                    $userAccess->save();
-                }
-            }
 
-            return response()->json(['message' => 'User created successfully.', 'status' => 201], 201);
+            $tag->save();
+
+            return response()->json(['message' => 'Staff created successfully.', 'status' => 201], 201);
         } catch (Exception $e) {
             return response()->json(['message' => $e->getMessage(), 'status' => 200], 200);
         }
@@ -202,16 +137,13 @@ class UserController extends Controller
                 $tag =  User::find($id);
                 $tag->status = $request->status;
                 $tag->save();
-                return response()->json(['message' => 'User Status Updated successfully.', 'status' => 201], 201);
+                return response()->json(['message' => 'Staff Status Updated successfully.', 'status' => 201], 201);
             }
             $arr = [
                 'email' => 'required|max:255',
             ];
 
 
-            if ($request->password != "") {
-                $arr['password'] = 'min:6';
-            }
             $validator = Validator::make($request->all(), $arr);
 
             if ($validator->fails()) {
@@ -227,13 +159,13 @@ class UserController extends Controller
             $tag->address_line2 = $request->address_line2;
             $tag->email = $request->email;
             $tag->contact_number = $request->contact_number;
+            $tag->hourly_rate = $request->hourly_rate;
+            $tag->mileage_rate = $request->mileage_rate;
 
             if ($request->has('status')) {
                 $tag->status = $request->status;
             }
-            if ($request->has('isActive')) {
-                $tag->isActive = $request->isActive;
-            }
+
             if ($request->has("password")) {
                 if ($request->password != "" && strlen($request->password) >= 6) {
                     $tag->password = $request->password;
@@ -242,7 +174,7 @@ class UserController extends Controller
 
             $tag->save();
 
-            return response()->json(['message' => 'User Updataed successfully.', 'status' => 201], 201);
+            return response()->json(['message' => 'staff Updataed successfully.', 'status' => 201], 201);
         } catch (Exception $e) {
             return response()->json(['message' => $e->getMessage(), 'status' => 200], 200);
         }
@@ -259,7 +191,7 @@ class UserController extends Controller
         $dlt = User::find($id);
         $dlt->delete();
 
-        Toastr::success('message', 'user deleted successfully.');
+        Toastr::success('message', 'staff deleted successfully.');
         return redirect()->back();
     }
 }

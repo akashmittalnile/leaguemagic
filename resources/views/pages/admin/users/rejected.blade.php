@@ -135,7 +135,7 @@
         <div class="modal-content">
             <div class="modal-body">
                 <div class="lm-modal-form">
-                    <h2>Edit Admin Details </h2>
+                    <h2>Rejected User Details </h2>
                     <form method="POST" enctype="multipart/form-data" id="edit-form">
                         @csrf
                         @method('PUT')

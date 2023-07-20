@@ -29,9 +29,11 @@ class StaffManagementController extends Controller
             $staffManagement = User::where("user_type", "staff")->where('first_name', "LIKE", "%$keyword%")->paginate($paginate);
             return view('pages.admin.staffManagement.index', compact('staffManagement', 'states'));
         }
+
         if (request()->has('export')) {
-            return (new userExport)->download('staff.xlsx');
+            return (new userExport("staff"))->download('staff.xlsx');
         }
+
         $staffManagement = User::where("user_type", "staff")->paginate($paginate);
         return view('pages.admin.staffManagement.index', compact('staffManagement', 'states'));
     }
@@ -56,14 +58,10 @@ class StaffManagementController extends Controller
     {
         try {
 
-
-
             $arr = [
                 'email' => 'required|unique:users|max:255',
                 'contact_number' => 'required|unique:users|max:15',
             ];
-
-
 
             $validator = Validator::make($request->all(), $arr);
 
@@ -78,7 +76,6 @@ class StaffManagementController extends Controller
             $tag->state_id = $request->state_id;
             $tag->role_id = 3;
             $tag->username = explode("@", $request->email)[0];
-
             $tag->user_type = "staff";
             $tag->address_line1 = $request->address_line1;
             $tag->address_line2 = $request->address_line2;
@@ -86,11 +83,7 @@ class StaffManagementController extends Controller
             $tag->contact_number = $request->contact_number;
             $tag->hourly_rate = $request->hourly_rate;
             $tag->mileage_rate = $request->mileage_rate;
-
             $tag->status = 1;
-
-
-
             $tag->save();
 
             return response()->json(['message' => 'Staff created successfully.', 'status' => 201], 201);

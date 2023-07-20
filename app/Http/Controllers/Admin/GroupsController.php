@@ -51,7 +51,7 @@ class GroupsController extends Controller
         if (request()->has('export')) {
             return (new GroupExport)->download('groups.xlsx');
         }
-        $groups = Group::latest()->paginate($paginate);
+        $groups = Group::orderBy("sort_order")->paginate($paginate);
 
 
         return view('pages.admin.groups.index', compact('groups'));
@@ -77,7 +77,8 @@ class GroupsController extends Controller
         try {
             $arr = [
                 'short_name' => 'required|unique:groups|max:255',
-                'name' => 'required|unique:groups|max:255'
+                'name' => 'required|unique:groups|max:255',
+                'sort_order' => 'unique:groups|numeric'
             ];
 
             $validator = Validator::make($request->all(), $arr);

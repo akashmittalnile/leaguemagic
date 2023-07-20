@@ -66,10 +66,10 @@
                             </div>
                         </div>
                         <div class="w-100">
-                            <select name="clubs[]" id="participating_clubs" class="form-control" multiple multiselect-search="true">
+                            <select name="users[]" id="participating_clubs" class="form-control" multiple multiselect-search="true">
 
-                                @foreach ($clubs as $item)
-                                <option value="{{ $item->id }}">{{ $item->title }}</option>
+                                @foreach ($users as $item)
+                                <option value="{{ $item->id }}">{{ $item->first_name!=""?$item->first_name." ".$item->last_name:$item->name }}</option>
                                 @endforeach
 
                             </select>

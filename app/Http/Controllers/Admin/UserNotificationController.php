@@ -25,10 +25,10 @@ class UserNotificationController extends Controller
         if (request()->has('start_date') || request("end_date")) {
             $userNotifications = UserNotification::where("status", 1);
             if (request("start_date") != "") {
-                $userNotifications =  $userNotifications->where('created_at', ">", request("start_date"));
+                $userNotifications =  $userNotifications->where('created_at', ">=", request("start_date"));
             }
             if (request("end_date") != "") {
-                $userNotifications =  $userNotifications->where('created_at', "<", request("start_date"));
+                $userNotifications =  $userNotifications->where('created_at', "<=", request("end_date"));
             }
             $userNotifications =   $userNotifications->paginate($paginate);
             return view('pages.admin.userNotification.index', compact('userNotifications'));
@@ -44,8 +44,8 @@ class UserNotificationController extends Controller
      */
     public function create()
     {
-        $clubs = Club::all();
-        return view("pages.admin.userNotification.create", compact('clubs'));
+        $users = User::all();
+        return view("pages.admin.userNotification.create", compact('users'));
     }
 
     /**
@@ -73,27 +73,26 @@ class UserNotificationController extends Controller
                 return response()->json(['errors' => $validator->errors()], 422);
             }
 
-
+            $users = [];
 
             $tag =  new UserNotification();
             $tag->subject = $request->subject;
             $tag->notification = $request->notification;
             $tag->status = 1;
-            $users = [];
-            $clubs = $request->clubs;
 
-            if (count($clubs)) {
-                $tag->object_type = "sent to " . count($clubs) . " clubs";
-                foreach ($clubs as $id) {
-                    $userClubs = UserClubAccess::where("club_id", $id)->get();
-                    foreach ($userClubs as $userClub) {
-                        $users[] = $userClub->user;
+            $user_ids = $request->users;
+            if ($request->has("users") && is_array($user_ids)) {
+                if (count($user_ids)) {
+                    $tag->object_type = implode(",", $user_ids);
+                    foreach ($user_ids as $id) {
+                        $users[] = User::find($id);
                     }
                 }
             }
+
             if ($request->has('all')) {
                 $users = User::where("user_type", "active")->get();
-                $tag->object_type = "sent to all users";
+                $tag->object_type = "all";
             }
             $tag->save();
 

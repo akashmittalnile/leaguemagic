@@ -8,7 +8,7 @@
                 <ul class="navbar-nav">
                     <li class="nav-item">
                         <a class="nav-link {{ Request::is('admin/programs*') ? 'active' : '' }}" aria-current="page" href="{{ route('admin.programs.index') }}">
-                            <span class="menu-icon"><img src="{{asset('public/admin/images/programs.svg')}}"></span>
+                            <span class="menu-icon"><img src="{{asset('public/admin/images/ClubRegistration.svg')}}"></span>
                             <span class="menu-title">Programs</span>
                         </a>
                     </li>

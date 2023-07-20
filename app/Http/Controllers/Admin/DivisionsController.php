@@ -43,7 +43,7 @@ class DivisionsController extends Controller
         if (request()->has('export')) {
             return (new DivisionExport)->download('divisions.xlsx');
         }
-        $divisions = Division::latest()->paginate($paginate);
+        $divisions = Division::latest()->orderBy("sort_order")->paginate($paginate);
         return view('pages.admin.divisions.index', compact('divisions'));
     }
 
@@ -68,7 +68,8 @@ class DivisionsController extends Controller
         try {
             $arr = [
                 'code' => 'required|unique:divisions|max:255',
-                'name' => 'required|unique:divisions|max:255'
+                'name' => 'required|unique:divisions|max:255',
+                'sort_order' => 'unique:divisions|numeric'
             ];
 
             $validator = Validator::make($request->all(), $arr);

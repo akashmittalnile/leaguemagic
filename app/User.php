@@ -4,6 +4,7 @@ namespace App;
 
 use App\Models\Positions;
 use App\Models\Role;
+use App\Models\State;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;

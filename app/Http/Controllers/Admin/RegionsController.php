@@ -50,7 +50,7 @@ class RegionsController extends Controller
         if (request()->has('export')) {
             return (new RegionExport)->download('regions.xlsx');
         }
-        $regions = Reagion::latest()->paginate($paginate);
+        $regions = Reagion::orderBy("sort_order")->paginate($paginate);
 
 
         return view('pages.admin.regions.index', compact('regions', 'conference'));
@@ -79,7 +79,8 @@ class RegionsController extends Controller
         try {
             $arr = [
                 'code' => 'required|unique:reagions|max:255',
-                'name' => 'required|unique:reagions|max:255'
+                'name' => 'required|unique:reagions|max:255',
+                'sort_order' => 'unique:reagions|numeric'
             ];
 
             $validator = Validator::make($request->all(), $arr);

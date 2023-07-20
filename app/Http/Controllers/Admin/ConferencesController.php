@@ -15,6 +15,7 @@ use Illuminate\Support\Str;
 use Carbon\Carbon;
 use Toastr;
 use Auth;
+use Exception;
 use File;
 use Validator;
 
@@ -48,7 +49,7 @@ class ConferencesController extends Controller
         if (request()->has('export')) {
             return (new ConferenceExport)->download('conference.xlsx');
         }
-        $conference = Conference::latest()->paginate($paginate);
+        $conference = Conference::latest()->orderBy("sort_order")->paginate($paginate);
         return view('pages.admin.conference.index', compact('conference'));
     }
 
@@ -73,7 +74,9 @@ class ConferencesController extends Controller
         try {
             $arr = [
                 'title' => 'required|unique:conferences|max:255',
-                'name' => 'required|unique:conferences|max:255'
+                'name' => 'required|unique:conferences|max:255',
+                'sort_order' => 'unique:conferences|numeric'
+
             ];
 
             $validator = Validator::make($request->all(), $arr);

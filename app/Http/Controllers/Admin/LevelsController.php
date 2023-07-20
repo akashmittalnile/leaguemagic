@@ -52,7 +52,7 @@ class LevelsController extends Controller
         if (request()->has('export')) {
             return (new LevelExport)->download('levels.xlsx');
         }
-        $levels = Level::latest()->paginate($paginate);
+        $levels = Level::orderBy("sort_order")->paginate($paginate);
 
 
         return view('pages.admin.levels.index', compact('levels'));
@@ -78,7 +78,8 @@ class LevelsController extends Controller
         try {
             $arr = [
                 'short_name' => 'required|unique:levels|max:255',
-                'name' => 'required|unique:levels|max:255'
+                'name' => 'required|unique:levels|max:255',
+                'sort_order' => 'unique:levels|numeric'
             ];
 
             $validator = Validator::make($request->all(), $arr);

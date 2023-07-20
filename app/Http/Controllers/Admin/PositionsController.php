@@ -41,7 +41,7 @@ class PositionsController extends Controller
         if (request()->has('export')) {
             return (new PositionExport)->download('positions.xlsx');
         }
-        $positions = Positions::latest()->paginate($paginate);
+        $positions = Positions::orderBy("sort_order")->paginate($paginate);
         return view('pages.admin.positions.index', compact('positions'));
     }
 
@@ -66,7 +66,8 @@ class PositionsController extends Controller
         try {
             $arr = [
 
-                'name' => 'required|max:255'
+                'name' => 'required|max:255',
+                'sort_order' => 'unique:positions|numeric'
             ];
 
             $validator = Validator::make($request->all(), $arr);

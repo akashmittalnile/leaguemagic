@@ -63,7 +63,7 @@
 
 
                             <td>
-                                {{ $con->name }}
+                                <span style="padding:10px;border-radius:5px;background:{{$con->badge_color_hex?$con->badge_color_hex:'rgb('.$con->badge_color.')'}};color:{{$con->text_color}}"> {{ $con->name }}</span>
                             </td>
 
                             <td>
@@ -233,7 +233,7 @@
                                                     <label for="">RED</label>
                                                 </div>
                                                 <div class="col-sm-6 ">
-                                                    <input type="text" class="form-control" name="RED" placeholder="Type Here">
+                                                    <input type="text" class="form-control" onchange="isValidRGBA(this.value)" name="RED" placeholder="Type Here">
                                                 </div>
                                             </div>
 
@@ -244,7 +244,7 @@
                                                     <label for="">GREEN</label>
                                                 </div>
                                                 <div class="col-sm-6 ">
-                                                    <input type="text" class="form-control" name="GREEN" placeholder="Type Here">
+                                                    <input type="text" class="form-control" onchange="isValidRGBA(this.value)" name="GREEN" placeholder="Type Here">
                                                 </div>
                                             </div>
                                         </div>
@@ -254,7 +254,7 @@
                                                     <label for="">BLUE</label>
                                                 </div>
                                                 <div class="col-sm-6 ">
-                                                    <input type="text" class="form-control" name="BLUE" placeholder="Type Here">
+                                                    <input type="text" onchange="isValidRGBA(this.value)" class="form-control" name="BLUE" placeholder="Type Here">
                                                 </div>
                                             </div>
                                         </div>
@@ -283,7 +283,7 @@
                                         </li>
                                         <li>
                                             <div class="lm-radio">
-                                                <input type="radio" value="black" id="BLACK" name="text_color">
+                                                <input type="radio" value="black" checked id="BLACK" name="text_color">
                                                 <label for="BLACK">
                                                     BLACK
                                                 </label>
@@ -450,7 +450,7 @@
                                                     <label for="">RED</label>
                                                 </div>
                                                 <div class="col-sm-6 ">
-                                                    <input type="text" class="form-control" id="edit-RED" name="RED" placeholder="Type Here">
+                                                    <input type="text" class="form-control" onchange="isValidRGBA(this.value)" id="edit-RED" name="RED" placeholder="Type Here">
                                                 </div>
                                             </div>
 
@@ -461,7 +461,7 @@
                                                     <label for="">GREEN</label>
                                                 </div>
                                                 <div class="col-sm-6 ">
-                                                    <input type="text" class="form-control" id="edit-GREEN" name="GREEN" placeholder="Type Here">
+                                                    <input type="text" class="form-control" onchange="isValidRGBA(this.value)" id="edit-GREEN" name="GREEN" placeholder="Type Here">
                                                 </div>
                                             </div>
                                         </div>
@@ -471,7 +471,7 @@
                                                     <label for="">BLUE</label>
                                                 </div>
                                                 <div class="col-sm-6 ">
-                                                    <input type="text" class="form-control" id="edit-BLUE" name="BLUE" placeholder="Type Here">
+                                                    <input type="text" class="form-control" id="edit-BLUE" onchange="isValidRGBA(this.value)" name="BLUE" placeholder="Type Here">
                                                 </div>
                                             </div>
                                         </div>
@@ -654,6 +654,13 @@
 
         $("#edit-form").attr("action", ele.getAttribute("data-update_url"));
 
+    }
+
+    function isValidRGBA(val) {
+        const red = Number(val);
+        if (isNaN(red) || red < 0 || red > 255) {
+            alert("please enter a value between 0 to 255")
+        }
     }
 </script>
 @endpush

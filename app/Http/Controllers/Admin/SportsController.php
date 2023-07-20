@@ -69,7 +69,8 @@ class SportsController extends Controller
         try {
             $arr = [
                 'code' => 'required|unique:sports|max:255',
-                'name' => 'required|unique:sports|max:255'
+                'name' => 'required|unique:sports|max:255',
+                'sort_order' => 'unique:sports|numeric'
             ];
 
             $validator = Validator::make($request->all(), $arr);

@@ -16,11 +16,17 @@ class userExport implements FromCollection, WithHeadings
     /**
      * @return \Illuminate\Support\Collection
      */
+
+    public $type;
+    public function __construct($type)
+    {
+        $this->type = $type;
+    }
+
     public function headings(): array
     {
         $user = new User();
         $tableName = $user->getTable();
-
         $columns = Schema::getColumnListing($tableName);
         if (($key = array_search('updated_at', $columns)) !== false) {
             unset($columns[$key]);
@@ -38,6 +44,10 @@ class userExport implements FromCollection, WithHeadings
     public function collection()
     {
         $users = User::all();
+        if ($this->type == "staff") {
+            $users = User::where("user_type", "staff")->get();
+        }
+
         $users->makeHidden(['password', "updated_at", "remember_token"]);
         foreach ($users as $i => $cert) {
             $cert->role_id = $cert->role ? $cert->role->name : "User";

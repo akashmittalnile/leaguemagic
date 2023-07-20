@@ -37,7 +37,7 @@ class UserController extends Controller
             return view('pages.admin.users.index', compact('users', 'states', 'positions', 'clubs'));
         }
         if (request()->has('export')) {
-            return (new userExport)->download('users.xlsx');
+            return (new userExport("user"))->download('users.xlsx');
         }
         $users = User::paginate($paginate);
         return view('pages.admin.users.index', compact('users', 'states', 'positions', 'clubs'));
